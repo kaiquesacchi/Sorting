@@ -1,6 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { NativeRouter, Route } from 'react-router-native';
+import Home from './src/pages/Home';
+import Settings from './src/pages/Settings';
 
+export default function App() {
+  return (
+    <NativeRouter>
+      <Route exact path="/" component={Home} />
+      <Route path="/settings" component={Settings} />
+    </NativeRouter>
+  );
+}
+
+/*
 export default function App() {
   return (
     <View style={styles.container}>
@@ -17,3 +29,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+*/
