@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
+import { TouchableOpacity, Text, View, Modal, Button, Picker } from 'react-native';
 import quicksort from '../../sortingAlgorithms/quicksort';
 export default function Home() {
   const [list, setList] = useState<number[]>([]);
-  const [listSize, setListSize] = useState(20);
+  const [listSize, setListSize] = useState(10);
   const [isRunning, setIsRunning] = useState(false);
+  const [modalSettings, setModalSettings] = useState(false);
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState('Quicksort');
 
-  useEffect(() => {
-    generateRandomArray();
-  }, []);
+  useEffect(
+    () => {
+      generateRandomArray();
+    },
+    [listSize]
+  );
 
   function play() {
     const swaps = quicksort([...list]);
@@ -56,6 +61,47 @@ export default function Home() {
           />
         );
       })}
+
+      <Modal animationType="slide" transparent={true} visible={modalSettings}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+          <View
+            style={{
+              width: '80%',
+              height: '50%',
+              backgroundColor: 'white',
+              borderColor: 'black',
+              borderWidth: 1,
+              borderRadius: 20,
+              padding: 20
+            }}
+          >
+            <Text>Settings</Text>
+            <Picker
+              selectedValue={selectedAlgorithm}
+              style={{ height: 50, width: 150 }}
+              onValueChange={(itemValue, itemIndex) => setSelectedAlgorithm(itemValue)}
+            >
+              <Picker.Item label="Quicksort" value="Quicksort" />
+            </Picker>
+            <Picker
+              selectedValue={listSize}
+              style={{ height: 50, width: 150 }}
+              onValueChange={(itemValue, itemIndex) => setListSize(itemValue)}
+            >
+              <Picker.Item label="10" value={10} />
+              <Picker.Item label="30" value={30} />
+              <Picker.Item label="100" value={100} />
+            </Picker>
+            <Button
+              onPress={() => {
+                setModalSettings(false);
+              }}
+              title="Close"
+            />
+          </View>
+        </View>
+      </Modal>
+
       <TouchableOpacity
         onPress={play}
         disabled={isRunning}
@@ -76,7 +122,9 @@ export default function Home() {
         <Text>></Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => {
+          setModalSettings(true);
+        }}
         disabled={isRunning}
         accessibilityLabel="Run the sorting algorithm"
         style={{
