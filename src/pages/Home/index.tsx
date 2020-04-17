@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, Text, View, Modal, Button, Picker } from 'react-native';
+import { Text, View, Modal, Button, Picker } from 'react-native';
 import quicksort from '../../sortingAlgorithms/quicksort';
+import { Container, Settings, SettingsPopup, FAB } from './styles';
+
 export default function Home() {
   const [list, setList] = useState<number[]>([]);
   const [listSize, setListSize] = useState(10);
@@ -40,15 +42,7 @@ export default function Home() {
   }
 
   return (
-    <View
-      style={{
-        flexDirection: 'column',
-        flex: 1,
-        paddingVertical: 80,
-        paddingHorizontal: 20,
-        justifyContent: 'space-around'
-      }}
-    >
+    <Container>
       {list.map((element, index) => {
         return (
           <View
@@ -63,18 +57,8 @@ export default function Home() {
       })}
 
       <Modal animationType="slide" transparent={true} visible={modalSettings}>
-        <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-          <View
-            style={{
-              width: '80%',
-              height: '50%',
-              backgroundColor: 'white',
-              borderColor: 'black',
-              borderWidth: 1,
-              borderRadius: 20,
-              padding: 20
-            }}
-          >
+        <Settings>
+          <SettingsPopup>
             <Text>Settings</Text>
             <Picker
               selectedValue={selectedAlgorithm}
@@ -98,69 +82,45 @@ export default function Home() {
               }}
               title="Close"
             />
-          </View>
-        </View>
+          </SettingsPopup>
+        </Settings>
       </Modal>
 
-      <TouchableOpacity
+      <FAB
         onPress={play}
         disabled={isRunning}
         accessibilityLabel="Run the sorting algorithm"
         style={{
-          backgroundColor: '#8020f0',
-          height: 65,
-          width: 65,
-          borderRadius: 65,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
           right: 20,
           bottom: 20
         }}
       >
         <Text>></Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </FAB>
+      <FAB
         onPress={() => {
           setModalSettings(true);
         }}
         disabled={isRunning}
         accessibilityLabel="Run the sorting algorithm"
         style={{
-          backgroundColor: '#8020f0',
-          height: 65,
-          width: 65,
-          borderRadius: 65,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
           right: 100,
           bottom: 20
         }}
       >
         <Text>*</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </FAB>
+      <FAB
         onPress={generateRandomArray}
         disabled={isRunning}
         accessibilityLabel="Run the sorting algorithm"
         style={{
-          backgroundColor: '#8020f0',
-          height: 65,
-          width: 65,
-          borderRadius: 65,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
           right: 180,
           bottom: 20
         }}
       >
         <Text>?</Text>
-      </TouchableOpacity>
-    </View>
+      </FAB>
+    </Container>
   );
 }
