@@ -1,12 +1,10 @@
 {
   "expo": {
-    "name": "sorting",
+    "name": "Sorting",
+    "description": "A beautiful visualization of Sorting Algorithms",
     "slug": "sorting",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "backgroundColor": "#252525",
+    "platforms": ["android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,11 +16,10 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "com.kaique.sorting",
+      "permissions": []
     }
   }
 }
