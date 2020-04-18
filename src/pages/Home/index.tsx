@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Modal, Picker } from 'react-native';
-import quicksort from '../../sortingAlgorithms/quicksort';
 import { Container, AnimationArea, Settings, SettingsPopup } from './styles';
 import { Appbar, FAB, Button } from 'react-native-paper';
+
+import { quicksort, mergesort } from '../../sortingAlgorithms';
 
 export default function Home() {
   const [list, setList] = useState<number[]>([]);
@@ -20,7 +21,19 @@ export default function Home() {
   );
 
   function play() {
-    const swaps = quicksort([...list]);
+    let swaps: number[][] = [];
+    switch (selectedAlgorithm) {
+      case 'Quicksort':
+        swaps = quicksort([...list]);
+        break;
+      case 'Mergesort':
+        swaps = mergesort([...list]);
+        break;
+      default:
+        swaps = quicksort([...list]);
+        break;
+    }
+
     if (swaps.length !== 0) setIsRunning(true);
     let newList = [...list];
     swaps.forEach((swap, index) => {
@@ -61,6 +74,7 @@ export default function Home() {
             onValueChange={itemValue => setSelectedAlgorithm(itemValue)}
           >
             <Picker.Item label="Quicksort" value="Quicksort" />
+            <Picker.Item label="Mergesort" value="Mergesort" />
           </Picker>
           <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>
             List Size
