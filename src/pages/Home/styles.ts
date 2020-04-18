@@ -1,10 +1,16 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
+  height: 100%;
+  width: 100%;
+`;
+
+export const AnimationArea = styled.View`
   flex-direction: column;
   flex: 1;
-  padding: 80px 20px;
+  padding: 10px 20px;
   justify-content: space-around;
+  background: #252525;
 `;
 
 export const Settings = styled.View`
@@ -16,17 +22,17 @@ export const Settings = styled.View`
 export const SettingsPopup = styled.View`
   width: 80%;
   height: 50%;
-  background-color: white;
-  border: 1px solid black;
+  background-color: #252525;
+  border: 2px solid white;
   border-radius: 20px;
   padding: 20px;
 `;
 
 export const FAB = styled.TouchableOpacity`
   background-color: #8020f0;
-  height: 65;
-  width: 65;
-  border-radius: 65;
+  height: 65px;
+  width: 65px;
+  border-radius: 65px;
   display: flex;
   justify-content: center;
   align-items: center;
