@@ -17,14 +17,13 @@ export const Settings = styled.View`
   align-items: center;
   justify-content: center;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 
 export const SettingsPopup = styled.View`
   width: 80%;
   height: 50%;
   background-color: #252525;
-  border: 2px solid white;
-  border-radius: 20px;
   padding: 20px;
 `;
 

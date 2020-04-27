@@ -57,13 +57,11 @@ export default function Home() {
   }
 
   const ModalSettings = (
-    <Modal animationType="slide" transparent={true} visible={modalSettingsVisible}>
+    <Modal animationType="fade" transparent={true} visible={modalSettingsVisible}>
       <Settings>
         <SettingsPopup>
           <Text style={{ color: 'white', fontSize: 20, marginBottom: 10 }}>Settings</Text>
-          <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>
-            Algorithm
-          </Text>
+          <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>Algorithm</Text>
           <Picker
             selectedValue={selectedAlgorithm}
             style={{
@@ -71,30 +69,26 @@ export default function Home() {
               width: 150,
               color: 'white'
             }}
-            onValueChange={itemValue => setSelectedAlgorithm(itemValue)}
+            onValueChange={(itemValue) => setSelectedAlgorithm(itemValue)}
           >
             <Picker.Item label="Quicksort" value="Quicksort" />
             <Picker.Item label="Mergesort" value="Mergesort" />
           </Picker>
-          <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>
-            List Size
-          </Text>
+          <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>List Size</Text>
           <Picker
             selectedValue={listSize}
             style={{ height: 50, width: 150, color: 'white' }}
-            onValueChange={itemValue => setListSize(itemValue)}
+            onValueChange={(itemValue) => setListSize(itemValue)}
           >
             <Picker.Item label="10 items" value={10} />
             <Picker.Item label="30 items" value={30} />
             <Picker.Item label="100 items" value={100} />
           </Picker>
-          <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>
-            Step Delay
-          </Text>
+          <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>Step Delay</Text>
           <Picker
             selectedValue={stepDelay}
             style={{ height: 50, width: 150, color: 'white' }}
-            onValueChange={itemValue => setStepDelay(itemValue)}
+            onValueChange={(itemValue) => setStepDelay(itemValue)}
           >
             <Picker.Item label="10 ms" value={10} />
             <Picker.Item label="100 ms" value={100} />
