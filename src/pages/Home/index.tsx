@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Modal, Picker } from 'react-native';
-import { Container, AnimationArea, Settings, SettingsPopup } from './styles';
+import { View, Modal, Picker } from 'react-native';
+import { Container, AnimationArea, Settings } from './styles';
 import { Appbar, FAB, Button } from 'react-native-paper';
 
 import { quicksort, mergesort } from '../../sortingAlgorithms';
@@ -58,44 +58,30 @@ export default function Home() {
 
   const ModalSettings = (
     <Modal animationType="fade" transparent={true} visible={modalSettingsVisible}>
-      <Settings>
-        <SettingsPopup>
-          <Text style={{ color: 'white', fontSize: 20, marginBottom: 10 }}>Settings</Text>
-          <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>Algorithm</Text>
-          <Picker
+      <Settings.Background>
+        <Settings.Popup>
+          <Settings.Title>Settings</Settings.Title>
+          <Settings.Subtitle>Algorithm</Settings.Subtitle>
+          <Settings.WhitePicker
             selectedValue={selectedAlgorithm}
-            style={{
-              height: 50,
-              width: 150,
-              color: 'white'
-            }}
             onValueChange={(itemValue) => setSelectedAlgorithm(itemValue)}
           >
             <Picker.Item label="Quicksort" value="Quicksort" />
             <Picker.Item label="Mergesort" value="Mergesort" />
-          </Picker>
-          <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>List Size</Text>
-          <Picker
-            selectedValue={listSize}
-            style={{ height: 50, width: 150, color: 'white' }}
-            onValueChange={(itemValue) => setListSize(itemValue)}
-          >
+          </Settings.WhitePicker>
+          <Settings.Subtitle>List Size</Settings.Subtitle>
+          <Settings.WhitePicker selectedValue={listSize} onValueChange={(itemValue) => setListSize(itemValue)}>
             <Picker.Item label="10 items" value={10} />
             <Picker.Item label="30 items" value={30} />
             <Picker.Item label="100 items" value={100} />
-          </Picker>
-          <Text style={{ color: 'white', fontSize: 14, marginBottom: -10 }}>Step Delay</Text>
-          <Picker
-            selectedValue={stepDelay}
-            style={{ height: 50, width: 150, color: 'white' }}
-            onValueChange={(itemValue) => setStepDelay(itemValue)}
-          >
+          </Settings.WhitePicker>
+          <Settings.Subtitle>Step Delay</Settings.Subtitle>
+          <Settings.WhitePicker selectedValue={stepDelay} onValueChange={(itemValue) => setStepDelay(itemValue)}>
             <Picker.Item label="10 ms" value={10} />
             <Picker.Item label="100 ms" value={100} />
             <Picker.Item label="500 ms" value={500} />
-          </Picker>
+          </Settings.WhitePicker>
           <Button
-            icon="check"
             mode="contained"
             onPress={() => setModalSettingsVisible(false)}
             style={{
@@ -104,13 +90,29 @@ export default function Home() {
               left: 20,
               width: '100%'
             }}
+            color="#03dac4"
           >
             APPLY
           </Button>
-        </SettingsPopup>
-      </Settings>
+        </Settings.Popup>
+      </Settings.Background>
     </Modal>
   );
+
+  const fabs = [
+    {
+      icon: 'tune',
+      label: 'Settings',
+      onPress: () => setModalSettingsVisible(true)
+    },
+    {
+      icon: 'playlist-plus',
+      label: 'New random list',
+      onPress: generateRandomArray
+    },
+    { icon: 'play', label: 'Run', onPress: play }
+  ];
+
   return (
     <Container>
       <Appbar.Header>
@@ -123,7 +125,7 @@ export default function Home() {
             <View
               key={index}
               style={{
-                backgroundColor: '#5060cc',
+                backgroundColor: '#5060c0',
                 width: element * 100 + '%',
                 height: 100 / (list.length * 1.3) + '%',
                 elevation: 2
@@ -136,19 +138,7 @@ export default function Home() {
         visible={!isRunning}
         open={FABOpen}
         icon={FABOpen ? 'minus' : 'plus'}
-        actions={[
-          {
-            icon: 'tune',
-            label: 'Settings',
-            onPress: () => setModalSettingsVisible(true)
-          },
-          {
-            icon: 'playlist-plus',
-            label: 'New list',
-            onPress: generateRandomArray
-          },
-          { icon: 'play', label: 'Run', onPress: play }
-        ]}
+        actions={fabs}
         onStateChange={({ open }) => {
           setFABOpen(open);
         }}
