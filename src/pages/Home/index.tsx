@@ -3,7 +3,7 @@ import { View, Modal, Picker } from 'react-native';
 import { Container, AnimationArea, Settings } from './styles';
 import { Appbar, FAB, Button } from 'react-native-paper';
 
-import { quicksort, mergesort, heapsort } from '../../sortingAlgorithms';
+import sortingAlgorithms from '../../sortingAlgorithms';
 
 export default function Home() {
   const [list, setList] = useState<number[]>([]);
@@ -26,16 +26,19 @@ export default function Home() {
     let swaps: number[][] = [];
     switch (selectedAlgorithm) {
       case 'Quicksort':
-        swaps = quicksort([...list]);
+        swaps = sortingAlgorithms.quicksort([...list]);
         break;
       case 'Mergesort':
-        swaps = mergesort([...list]);
+        swaps = sortingAlgorithms.mergesort([...list]);
         break;
       case 'Heapsort':
-        swaps = heapsort([...list]);
+        swaps = sortingAlgorithms.heapsort([...list]);
+        break;
+      case 'InsertionSort':
+        swaps = sortingAlgorithms.insertionSort([...list]);
         break;
       default:
-        swaps = quicksort([...list]);
+        swaps = sortingAlgorithms.quicksort([...list]);
         break;
     }
     if (swaps.length === 0) {
@@ -81,6 +84,7 @@ export default function Home() {
             <Picker.Item label="Quicksort" value="Quicksort" />
             <Picker.Item label="Mergesort" value="Mergesort" />
             <Picker.Item label="Heapsort" value="Heapsort" />
+            <Picker.Item label="Insertion Sort" value="InsertionSort" />
           </Settings.WhitePicker>
           <Settings.Subtitle>List Size</Settings.Subtitle>
           <Settings.WhitePicker selectedValue={listSize} onValueChange={(itemValue) => setListSize(itemValue)}>
