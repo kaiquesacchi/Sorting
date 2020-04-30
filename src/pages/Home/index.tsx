@@ -7,19 +7,32 @@ import sortingAlgorithms from '../../sortingAlgorithms';
 
 export default function Home() {
   const [list, setList] = useState<number[]>([]);
-  const [listSize, setListSize] = useState(100);
+  const [listSize, setListSize] = useState(50);
   const [isRunning, setIsRunning] = useState(false);
   const [modalSettingsVisible, setModalSettingsVisible] = useState(false);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState('Quicksort');
   const [stepDelay, setStepDelay] = useState(10);
   const [currentSwap, setCurrentSwap] = useState<number[]>([]);
   const [FABOpen, setFABOpen] = useState(false);
-  useEffect(
-    () => {
-      generateRandomArray();
-    },
-    [listSize]
-  );
+
+  useEffect(generateRandomArray, [listSize]);
+
+  function step(swaps: number[][], list: number[]) {
+    const swap = swaps.shift();
+    if (swap === undefined) {
+      setIsRunning(false);
+      setCurrentSwap([]);
+      return;
+    }
+    setCurrentSwap(swap);
+    let aux = list[swap[0]];
+    list[swap[0]] = list[swap[1]];
+    list[swap[1]] = aux;
+    setList([...list]);
+    setTimeout(() => {
+      step(swaps, list);
+    }, stepDelay);
+  }
 
   function play() {
     setIsRunning(true);
@@ -45,30 +58,15 @@ export default function Home() {
       setIsRunning(false);
       return;
     }
-
-    let newList = [...list];
-    swaps.forEach((swap, index) => {
-      setTimeout(() => {
-        setCurrentSwap(swap);
-        let aux = newList[swap[0]];
-        newList[swap[0]] = newList[swap[1]];
-        newList[swap[1]] = aux;
-        setList([...newList]);
-      }, stepDelay * (index + 1));
-    });
-    setTimeout(() => {
-      setIsRunning(false);
-      setCurrentSwap([]);
-    }, stepDelay * (swaps.length + 1));
+    step(swaps, [...list]);
   }
 
-  function generateRandomArray(): number[] {
+  function generateRandomArray() {
     let array: number[] = [];
     for (let i = 0; i < listSize; i++) {
       array.push(Math.random());
     }
     setList(array);
-    return array;
   }
 
   const ModalSettings = (
@@ -89,14 +87,16 @@ export default function Home() {
           <Settings.Subtitle>List Size</Settings.Subtitle>
           <Settings.WhitePicker selectedValue={listSize} onValueChange={(itemValue) => setListSize(itemValue)}>
             <Picker.Item label="10 items" value={10} />
-            <Picker.Item label="30 items" value={30} />
+            <Picker.Item label="50 items" value={50} />
             <Picker.Item label="100 items" value={100} />
+            <Picker.Item label="200 items" value={200} />
           </Settings.WhitePicker>
           <Settings.Subtitle>Step Delay</Settings.Subtitle>
           <Settings.WhitePicker selectedValue={stepDelay} onValueChange={(itemValue) => setStepDelay(itemValue)}>
+            <Picker.Item label="0 ms" value={0} />
             <Picker.Item label="10 ms" value={10} />
             <Picker.Item label="100 ms" value={100} />
-            <Picker.Item label="500 ms" value={500} />
+            <Picker.Item label="200 ms" value={200} />
           </Settings.WhitePicker>
           <Button
             mode="contained"
