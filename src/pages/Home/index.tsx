@@ -12,6 +12,7 @@ export default function Home() {
   const [modalSettingsVisible, setModalSettingsVisible] = useState(false);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState('Quicksort');
   const [stepDelay, setStepDelay] = useState(10);
+  const [currentSwap, setCurrentSwap] = useState<number[]>([]);
   const [FABOpen, setFABOpen] = useState(false);
   useEffect(
     () => {
@@ -21,6 +22,7 @@ export default function Home() {
   );
 
   function play() {
+    setIsRunning(true);
     let swaps: number[][] = [];
     switch (selectedAlgorithm) {
       case 'Quicksort':
@@ -36,18 +38,25 @@ export default function Home() {
         swaps = quicksort([...list]);
         break;
     }
+    if (swaps.length === 0) {
+      setIsRunning(false);
+      return;
+    }
 
-    if (swaps.length !== 0) setIsRunning(true);
     let newList = [...list];
     swaps.forEach((swap, index) => {
       setTimeout(() => {
+        setCurrentSwap(swap);
         let aux = newList[swap[0]];
         newList[swap[0]] = newList[swap[1]];
         newList[swap[1]] = aux;
         setList([...newList]);
-        if (index === swaps.length - 1) setIsRunning(false);
       }, stepDelay * (index + 1));
     });
+    setTimeout(() => {
+      setIsRunning(false);
+      setCurrentSwap([]);
+    }, stepDelay * (swaps.length + 1));
   }
 
   function generateRandomArray(): number[] {
@@ -129,7 +138,7 @@ export default function Home() {
             <View
               key={index}
               style={{
-                backgroundColor: '#5060c0',
+                backgroundColor: currentSwap.includes(index) ? '#03dac4' : '#5060c0',
                 width: element * 100 + '%',
                 height: 100 / (list.length * 1.3) + '%',
                 elevation: 2
