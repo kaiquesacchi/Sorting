@@ -11,14 +11,14 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#151515"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "android": {
-      "package": "com.kaique.sorting",
+      "package": "com.kaiquesacchi.sorting",
       "permissions": []
     }
   }
