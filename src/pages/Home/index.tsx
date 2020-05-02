@@ -14,52 +14,61 @@ export default function Home() {
   const [stepDelay, setStepDelay] = useState(10);
   const [currentSwap, setCurrentSwap] = useState<number[]>([]);
   const [FABOpen, setFABOpen] = useState(false);
+  const [swaps, setSwaps] = useState<number[][]>([]);
 
   useEffect(generateRandomArray, [listSize]);
 
-  function step(swaps: number[][], list: number[]) {
-    const swap = swaps.shift();
-    if (swap === undefined) {
-      setIsRunning(false);
-      setCurrentSwap([]);
-      return;
-    }
-    setCurrentSwap(swap);
-    let aux = list[swap[0]];
-    list[swap[0]] = list[swap[1]];
-    list[swap[1]] = aux;
-    setList([...list]);
-    setTimeout(() => {
-      step(swaps, list);
-    }, stepDelay);
-  }
+  useEffect(
+    () => {
+      if (isRunning) {
+        switch (selectedAlgorithm) {
+          case 'Quicksort':
+            setSwaps(sortingAlgorithms.quicksort([...list]));
+            break;
+          case 'Mergesort':
+            setSwaps(sortingAlgorithms.mergesort([...list]));
+            break;
+          case 'Heapsort':
+            setSwaps(sortingAlgorithms.heapsort([...list]));
+            break;
+          case 'InsertionSort':
+            setSwaps(sortingAlgorithms.insertionSort([...list]));
+            break;
+          default:
+            setSwaps(sortingAlgorithms.quicksort([...list]));
+            break;
+        }
+      } else setCurrentSwap([]);
+    },
+    [isRunning]
+  );
 
-  function play() {
-    setIsRunning(true);
-    let swaps: number[][] = [];
-    switch (selectedAlgorithm) {
-      case 'Quicksort':
-        swaps = sortingAlgorithms.quicksort([...list]);
-        break;
-      case 'Mergesort':
-        swaps = sortingAlgorithms.mergesort([...list]);
-        break;
-      case 'Heapsort':
-        swaps = sortingAlgorithms.heapsort([...list]);
-        break;
-      case 'InsertionSort':
-        swaps = sortingAlgorithms.insertionSort([...list]);
-        break;
-      default:
-        swaps = sortingAlgorithms.quicksort([...list]);
-        break;
-    }
-    if (swaps.length === 0) {
-      setIsRunning(false);
-      return;
-    }
-    step(swaps, [...list]);
-  }
+  useEffect(
+    () => {
+      if (!isRunning) return;
+      setTimeout(() => {
+        if (swaps.length === 0) {
+          setIsRunning(false);
+          return;
+        }
+        setCurrentSwap(swaps[0]);
+        setSwaps([...swaps].slice(1));
+      }, stepDelay);
+    },
+    [swaps]
+  );
+
+  useEffect(
+    () => {
+      if (currentSwap.length !== 2) return;
+      let listCopy = [...list];
+      let aux = listCopy[currentSwap[0]];
+      listCopy[currentSwap[0]] = listCopy[currentSwap[1]];
+      listCopy[currentSwap[1]] = aux;
+      setList([...listCopy]);
+    },
+    [currentSwap]
+  );
 
   function generateRandomArray() {
     let array: number[] = [];
@@ -87,16 +96,17 @@ export default function Home() {
           <Settings.Subtitle>List Size</Settings.Subtitle>
           <Settings.WhitePicker selectedValue={listSize} onValueChange={(itemValue) => setListSize(itemValue)}>
             <Picker.Item label="10 items" value={10} />
+            <Picker.Item label="30 items" value={30} />
             <Picker.Item label="50 items" value={50} />
             <Picker.Item label="100 items" value={100} />
             <Picker.Item label="200 items" value={200} />
           </Settings.WhitePicker>
           <Settings.Subtitle>Step Delay</Settings.Subtitle>
           <Settings.WhitePicker selectedValue={stepDelay} onValueChange={(itemValue) => setStepDelay(itemValue)}>
-            <Picker.Item label="0 ms" value={0} />
+            <Picker.Item label="1 ms" value={1} />
             <Picker.Item label="10 ms" value={10} />
             <Picker.Item label="100 ms" value={100} />
-            <Picker.Item label="200 ms" value={200} />
+            <Picker.Item label="1s" value={1000} />
           </Settings.WhitePicker>
           <Button
             mode="contained"
@@ -127,7 +137,7 @@ export default function Home() {
       label: 'New random list',
       onPress: generateRandomArray
     },
-    { icon: 'play', label: 'Run', onPress: play }
+    { icon: 'play', label: 'Run', onPress: () => setIsRunning(true) }
   ];
 
   return (
@@ -159,6 +169,12 @@ export default function Home() {
         onStateChange={({ open }) => {
           setFABOpen(open);
         }}
+      />
+      <FAB
+        visible={isRunning}
+        icon={'stop'}
+        style={{ position: 'absolute', bottom: 16, right: 16 }}
+        onPress={() => setIsRunning(false)}
       />
     </Container>
   );
