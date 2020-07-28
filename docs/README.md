@@ -69,7 +69,7 @@ continuidade à execução clicando em *'Run'* novamente.
 2. Abrir o emulador de dispositivo móvel.
 3. Acessar a pasta-raíz do projeto.
 4. Instalar as dependências com `npm install`.
-5. Executar o projeto com `expo start`. Um [servidor local] (localhost:19002) será aberto.
+5. Executar o projeto com `expo start`. Um [servidor local](localhost:19002) será aberto.
 6. Acessar o servidor pelo navegador e selecionar ***run on Android device/emulator*** ou ***run on iOS simulator***, na barra lateral.
 
 ---
